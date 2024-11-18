@@ -6,41 +6,23 @@
     <form @submit.prevent="handleSubmit">
       <div>
         <label for="termo">Termo:</label>
-        <input
-          type="text"
-          id="termo"
-          v-model="newItem.termo"
-          required
-        />
+        <input type="text" id="termo" v-model="newItem.termo" required />
         <span v-if="errors.termo" class="error">{{ errors.termo }}</span>
       </div>
       <div>
         <label for="significado">Significado:</label>
-        <input
-          type="text"
-          id="significado"
-          v-model="newItem.significado"
-          required
-        />
+        <input type="text" id="significado" v-model="newItem.significado" required />
         <span v-if="errors.significado" class="error">{{ errors.significado }}</span>
       </div>
       <div>
         <label for="versao">Versão:</label>
-        <input
-          type="number"
-          id="versao"
-          v-model="newItem.versao"
-        />
+        <input type="number" id="versao" v-model="newItem.versao" />
       </div>
 
       <!-- Campo de data e hora de desativação -->
       <div>
         <label for="dataHoraDesativacao">Data e Hora de Desativação:</label>
-        <input
-          type="datetime-local"
-          id="dataHoraDesativacao"
-          v-model="newItem.dataHoraDesativacao"
-        />
+        <input type="datetime-local" id="dataHoraDesativacao" v-model="newItem.dataHoraDesativacao" />
       </div>
 
       <button type="submit">Cadastrar</button>
@@ -49,19 +31,11 @@
     <!-- Campos para Buscar por Termo e Versão -->
     <div>
       <label for="searchTermo">Buscar Termo:</label>
-      <input
-        type="text"
-        id="searchTermo"
-        v-model="searchParams.termo"
-      />
+      <input type="text" id="searchTermo" v-model="searchParams.termo" />
     </div>
     <div>
       <label for="searchVersao">Buscar Versão:</label>
-      <input
-        type="number"
-        id="searchVersao"
-        v-model="searchParams.versao"
-      />
+      <input type="number" id="searchVersao" v-model="searchParams.versao" />
     </div>
     <button @click="searchByTermoAndVersao">Buscar</button>
 
@@ -123,7 +97,14 @@ async function searchByTermoAndVersao(context) {
         `https://8080-carloskb-springboot3app-rbdaypshy4b.ws-us116.gitpod.io/vocabulo/${context.searchParams.termo}/${context.searchParams.versao}`
       );
       if (Array.isArray(response.data)) {
-        context.items = response.data;
+        console.log(response.data);
+        
+        if (response.data.length > 0) {
+          context.items = response.data;
+        } else {
+          alert("Nenhum item encontrado")
+        }
+
       } else {
         console.error("A resposta da API não é um array:", response.data);
       }
@@ -220,27 +201,33 @@ h1 {
   color: #333;
   margin-bottom: 20px;
 }
+
 .vocab-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
+
 .vocab-table th,
 .vocab-table td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: left;
 }
+
 .vocab-table th {
   background-color: #007bff;
   color: white;
 }
+
 .vocab-table tr:nth-child(even) {
   background-color: #3a3a3a;
 }
+
 .vocab-table tr:hover {
   background-color: #2c2c2c;
 }
+
 .error {
   color: red;
   font-size: 0.875rem;
